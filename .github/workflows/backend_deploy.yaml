@@ -50,6 +50,11 @@ jobs:
 
           export debug_mode=${{ secrets.DEBUG_MODE }}
           export use_mail_wasm_parser=${{ secrets.BACKEND_USE_MAIL_WASM_PARSER }}
+
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ] || [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$WRANGLER_TOML_CONTENT" ]; then
+            echo "Skipping backend deploy because required secrets are not configured."
+            exit 0
+          fi
           
           cd worker/
           # ✅ 修复核心：使用环境变量写入，避免 Shell 解析特殊字符
